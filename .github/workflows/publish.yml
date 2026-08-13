@@ -31,8 +31,12 @@ jobs:
       - name: Install
         run: npm ci --ignore-scripts
 
-      - name: Syntax check
-        run: npm run check
+      - name: Quality gate
+        run: |
+          npm run lint
+          npm run format:check
+          npm run typecheck
+          npm test
 
       - name: Check the tag matches package.json
         if: github.event_name == 'release'

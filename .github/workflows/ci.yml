@@ -6,7 +6,31 @@ on:
   pull_request:
 
 jobs:
-  build:
+  # Fast lane: rules, types and unit tests. No browser, seconds not minutes.
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --ignore-scripts
+
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+
+      # The .d.mts files are committed so a git clone has them; this catches the
+      # case where someone edits JSDoc and forgets to regenerate.
+      - name: Check the committed types are current
+        run: git diff --exit-code types/
+
+  # Slow lane: the only thing that exercises Chromium, printing and pdf-lib.
+  handbook:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,18 +41,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+          cache: npm
 
-      - name: Install
-        run: npm ci --ignore-scripts
+      - run: npm ci --ignore-scripts
 
-      - name: Syntax check
-        run: npm run check
-
-      # The real test: bind the example docs and assert the PDF came out with
-      # pages, working internal links, and no link left pointing at a .md file.
+      # Chromium comes from the runner image rather than a 170MB download.
       - name: Build the example handbook
         run: node bin/rita-pdf.mjs --config examples/rita.config.mjs
+        env:
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
 
+      # A PDF that renders but whose links point nowhere looks fine in a
+      # screenshot and is useless in the hand.
       - name: Verify the output
         run: node scripts/verify.mjs examples/handbook.pdf
 
