@@ -38,11 +38,6 @@ function hasUnzip() {
  * pnpm both block package build scripts by default now — a tool run through
  * `npx` cannot count on puppeteer's postinstall having fetched a browser. First
  * run pays for the download (~170MB); later runs are offline.
- *
- * The archive is fetched and unpacked as two separate steps. The bundled
- * JS unpacker has been observed to stall — leaving a directory with no `chrome`
- * binary in it, and a promise that never settles — so where the system `unzip`
- * exists it does the unpacking instead.
  */
 export async function ensureBrowser(configuredPath, log) {
   const explicit = configuredPath ?? process.env.PUPPETEER_EXECUTABLE_PATH;
@@ -52,7 +47,7 @@ export async function ensureBrowser(configuredPath, log) {
   }
 
   // …/<cacheDir>/chrome/<platform>-<buildId>/chrome-linux64/chrome
-  const exe = executablePath();
+  const exe = await executablePath();
   if (existsSync(exe)) return exe;
 
   const installDir = dirname(dirname(exe));
@@ -63,29 +58,31 @@ export async function ensureBrowser(configuredPath, log) {
   const { install, Browser } = await import("@puppeteer/browsers");
 
   log(`downloading Chromium ${buildId} (first run only, ~170MB)…`);
-  await install({ browser: Browser.CHROME, buildId, cacheDir, unpack: !hasUnzip() });
+  await install({ browser: Browser.CHROME, buildId, cacheDir });
+  if (existsSync(exe)) return exe;
 
-  if (!existsSync(exe)) {
-    const archive = existsSync(archiveDir)
-      ? readdirSync(archiveDir).find((f) => f.endsWith(".zip") && f.includes(buildId))
-      : undefined;
-    if (!archive) {
-      throw new Error(
-        `Chromium is missing after download (${exe}).\n` +
-          "Point rita-pdf at an existing browser with --browser <path>."
-      );
-    }
+  // Belt and braces: an unpacker that exits without producing an executable has
+  // happened before (extract-zip, removed in @puppeteer/browsers 3). The
+  // archive is intact either way, so finish the job with the system `unzip`.
+  const archive = existsSync(archiveDir)
+    ? readdirSync(archiveDir).find((f) => f.endsWith(".zip") && f.includes(buildId))
+    : undefined;
+  if (!archive || !hasUnzip()) {
+    throw new Error(
+      `Chromium is missing after download (${exe}).\n` +
+        "Point rita-pdf at an existing browser with --browser <path>."
+    );
+  }
 
-    log("unpacking…");
-    await mkdir(installDir, { recursive: true });
-    execFileSync("unzip", ["-qo", join(archiveDir, archive), "-d", installDir], {
-      stdio: "inherit",
-    });
+  log("unpacking…");
+  await mkdir(installDir, { recursive: true });
+  execFileSync("unzip", ["-qo", join(archiveDir, archive), "-d", installDir], {
+    stdio: "inherit",
+  });
 
-    for (const binary of ["chrome", "chrome_crashpad_handler", "chrome_sandbox"]) {
-      const path = join(dirname(exe), binary);
-      if (existsSync(path)) await chmod(path, 0o755);
-    }
+  for (const binary of ["chrome", "chrome_crashpad_handler", "chrome_sandbox"]) {
+    const path = join(dirname(exe), binary);
+    if (existsSync(path)) await chmod(path, 0o755);
   }
 
   if (!existsSync(exe)) throw new Error(`Chromium still missing after unpacking: ${exe}`);

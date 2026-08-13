@@ -1,7 +1,7 @@
 {
   "name": "rita-pdf",
   "version": "0.1.0",
-  "description": "Binds a directory of Markdown docs into a single typeset PDF handbook \u2014 cover, table of contents with real page numbers, mermaid diagrams, and syntax-highlighted code.",
+  "description": "Binds a directory of Markdown docs into a single typeset PDF handbook — cover, table of contents with real page numbers, mermaid diagrams, and syntax-highlighted code.",
   "keywords": [
     "markdown",
     "pdf",
@@ -43,12 +43,12 @@
     "prepare": "husky || true"
   },
   "dependencies": {
-    "@puppeteer/browsers": "^2.13.0",
+    "@puppeteer/browsers": "^3.2.0",
     "highlight.js": "^11.11.1",
     "markdown-it": "^14.1.0",
     "mermaid": "^11.4.1",
     "pdf-lib": "^1.17.1",
-    "puppeteer": "^24.1.0"
+    "puppeteer": "^25.6.0"
   },
   "repository": {
     "type": "git",
