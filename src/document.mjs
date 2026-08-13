@@ -109,6 +109,16 @@ ${meta}
 </section>`;
 }
 
+/**
+ * Assembles the whole document: cover, contents, part dividers and chapters.
+ *
+ * @param {import("./config.mjs").ResolvedConfig} config
+ * @param {import("./index.mjs").RenderedChapter[]} chapters
+ * @param {string} css
+ * @param {Map<string, number>|null} [pageOf] Heading id -> printed page. Null on the
+ *   measuring pass, when the page numbers are not known yet.
+ * @returns {string}
+ */
 export function buildHtml(config, chapters, css, pageOf = null) {
   const multiPart = config.parts.length > 1;
 
@@ -153,6 +163,11 @@ ${body}
 /**
  * The stylesheet, with one accent block per configured part appended. Colours
  * live in config, so a project picks its own without forking the theme.
+ */
+/**
+ * @param {import("./config.mjs").ResolvedConfig} config
+ * @param {string} assetsDir
+ * @returns {Promise<string>}
  */
 export async function loadCss(config, assetsDir) {
   const base = config.style

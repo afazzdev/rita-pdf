@@ -9,10 +9,37 @@ import { renderPdf } from "./render.mjs";
 export { loadConfig, findConfig, CONFIG_NAMES } from "./config.mjs";
 export { buildHtml, loadCss } from "./document.mjs";
 
+/**
+ * Re-exported from the package entry so a config file can say
+ * `\@type {import("rita-pdf").Config}` and have it resolve.
+ *
+ * @typedef {import("./config.mjs").Config} Config
+ * @typedef {import("./config.mjs").PartConfig} PartConfig
+ * @typedef {import("./config.mjs").ChapterConfig} ChapterConfig
+ * @typedef {import("./config.mjs").ResolvedConfig} ResolvedConfig
+ */
+
 const ASSETS_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "assets");
 
-/** Reads every chapter and renders it to HTML, collecting contents entries. */
-async function renderChapters(config) {
+/**
+ * A chapter with its Markdown rendered to HTML.
+ *
+ * @typedef {import("./config.mjs").ResolvedChapter & {
+ *   body: string,
+ *   tocEntries: { id: string, text: string }[],
+ * }} RenderedChapter
+ */
+
+/**
+ * Reads every chapter and renders it to HTML, collecting contents entries.
+ *
+ * Exported because it is the seam tests use to check the assembled HTML without
+ * starting a browser.
+ *
+ * @param {import("./config.mjs").ResolvedConfig} config
+ * @returns {Promise<RenderedChapter[]>}
+ */
+export async function renderChapters(config) {
   const md = createRenderer();
   const chapterByFile = new Map(config.chapters.map((c) => [c.file, c]));
   const docsName = basename(config.docsDir);
@@ -47,7 +74,18 @@ function findDanglingLinks(chapters) {
 
 /**
  * Builds the PDF described by `config` (already normalized by `loadConfig`).
- * Returns `{ outFile, pages, chapters, numbered, dangling }`.
+ *
+ * @param {import("./config.mjs").ResolvedConfig} config
+ * @param {object} [options]
+ * @param {(message: string) => void} [options.log] Progress reporter. Silent by default.
+ * @returns {Promise<{
+ *   outFile: string,
+ *   pages: number,
+ *   numbered: boolean,
+ *   chapters: RenderedChapter[],
+ *   dangling: string[],
+ * }>} `numbered` is false when the contents shipped without page numbers;
+ *   `dangling` lists links still pointing at a .md file, which cannot work in a PDF.
  */
 export async function build(config, { log = () => {} } = {}) {
   log(`rendering ${config.chapters.length} chapters…`);

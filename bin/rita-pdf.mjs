@@ -130,5 +130,5 @@ try {
       (result.numbered ? "" : " (contents unnumbered)")
   );
 } catch (error) {
-  fail(error.message);
+  fail(error instanceof Error ? error.message : String(error));
 }

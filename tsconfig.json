@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["es2023", "dom"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+
+    // The source stays plain ESM with JSDoc types: the files published are the
+    // files that run. TypeScript is only here to check them and emit .d.ts.
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "types",
+
+    "types": ["node"],
+
+    "strict": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.mjs", "bin/**/*.mjs"],
+  "exclude": ["node_modules", "types", "tests", "examples"]
+}

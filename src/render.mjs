@@ -163,7 +163,11 @@ window.__mermaidDone = true;
 `,
       });
       await page.waitForFunction("window.__mermaidDone === true", { timeout: 120_000 });
-      const mermaidError = await page.evaluate(() => window.__mermaidError || null);
+      const mermaidError = await page.evaluate(
+        // Set by the injected module above; the page's own typings know nothing
+        // of it, hence the cast.
+        () => /** @type {any} */ (window).__mermaidError || null
+      );
       if (mermaidError) throw new Error(`Mermaid rendering failed: ${mermaidError}`);
 
       // A diagram wider than it is tall becomes unreadable squeezed into the
