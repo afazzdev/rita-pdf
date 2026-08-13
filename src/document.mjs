@@ -69,7 +69,9 @@ function buildCover(config, chapters) {
     .map((part) => {
       const count = chapters.filter((c) => c.part === part.id).length;
       if (!count) return "";
-      const tagline = part.tagline ? `${escapeHtml(part.name)} · ${escapeHtml(part.tagline)}` : escapeHtml(part.name);
+      const tagline = part.tagline
+        ? `${escapeHtml(part.name)} · ${escapeHtml(part.tagline)}`
+        : escapeHtml(part.name);
       return `<div><span class="label">${escapeHtml(
         part.numeral
       )}</span>${tagline}<br>${count} chapter${count === 1 ? "" : "s"}</div>`;
@@ -78,7 +80,9 @@ function buildCover(config, chapters) {
     .join("\n      ");
 
   const cards =
-    config.parts.length > 1 ? `\n    <div class="cover-parts">\n      ${partCards}\n    </div>` : "";
+    config.parts.length > 1
+      ? `\n    <div class="cover-parts">\n      ${partCards}\n    </div>`
+      : "";
   const mark = config.mark ? `\n  <div class="mark">${escapeHtml(config.mark)}</div>` : "";
   const subtitle = config.subtitle
     ? `\n    <div class="subtitle">${escapeHtml(config.subtitle)}</div>`

@@ -1,7 +1,7 @@
 # Platform
 
-The example service this handbook documents. Everything here is fictional — it exists so
-`rita-pdf` has something to bind, and so CI can prove the output still works.
+The example service this handbook documents. Everything here is fictional — it exists so `rita-pdf`
+has something to bind, and so CI can prove the output still works.
 
 ## Table of Contents
 

@@ -32,7 +32,11 @@ export default {
 
   chapters: [
     { part: "platform", file: "platform/README.md", title: "platform — Overview" },
-    { part: "platform", file: "platform/guides/configuration.md", title: "platform — Configuration" },
+    {
+      part: "platform",
+      file: "platform/guides/configuration.md",
+      title: "platform — Configuration",
+    },
     { part: "platform", file: "platform/guides/deployment.md", title: "platform — Deployment" },
     { part: "platform", file: "platform/reference/api.md", title: "platform — API Reference" },
     { part: "client", file: "client/README.md", title: "client — Overview" },

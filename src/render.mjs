@@ -13,11 +13,7 @@ const require = createRequire(import.meta.url);
 /** Locates mermaid's ESM bundle; the exact filename varies between releases. */
 function resolveMermaidEntry() {
   const pkg = dirname(require.resolve("mermaid/package.json"));
-  const candidates = [
-    "dist/mermaid.esm.min.mjs",
-    "dist/mermaid.esm.mjs",
-    "dist/mermaid.core.mjs",
-  ];
+  const candidates = ["dist/mermaid.esm.min.mjs", "dist/mermaid.esm.mjs", "dist/mermaid.core.mjs"];
   for (const candidate of candidates) {
     const path = join(pkg, candidate);
     if (existsSync(path)) return path;
@@ -82,7 +78,9 @@ export async function ensureBrowser(configuredPath, log) {
 
     log("unpacking…");
     await mkdir(installDir, { recursive: true });
-    execFileSync("unzip", ["-qo", join(archiveDir, archive), "-d", installDir], { stdio: "inherit" });
+    execFileSync("unzip", ["-qo", join(archiveDir, archive), "-d", installDir], {
+      stdio: "inherit",
+    });
 
     for (const binary of ["chrome", "chrome_crashpad_handler", "chrome_sandbox"]) {
       const path = join(dirname(exe), binary);
@@ -232,7 +230,12 @@ export async function renderPdf(config, chapters, css, { tmpDir, log }) {
   });
 
   try {
-    const measured = await printPass(browser, context, buildHtml(config, chapters, css), "pass-1.html");
+    const measured = await printPass(
+      browser,
+      context,
+      buildHtml(config, chapters, css),
+      "pass-1.html"
+    );
     const pageOf = await extractDestinationPages(measured);
 
     if (!pageOf.size) {

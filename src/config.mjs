@@ -188,7 +188,9 @@ function buildPart(part, index) {
     name,
     numeral,
     tagline: part.tagline ?? "",
-    label: part.label ?? (part.tagline ? `${numeral} — ${name} (${part.tagline})` : `${numeral} — ${name}`),
+    label:
+      part.label ??
+      (part.tagline ? `${numeral} — ${name} (${part.tagline})` : `${numeral} — ${name}`),
     blurb: part.blurb ?? "",
     accent: part.accent ?? colours.accent,
     accentTint: part.accentTint ?? colours.accentTint,
@@ -229,7 +231,10 @@ function normalizeChapters(raw, files, parts) {
 
 /** Per-chapter anchor namespace: `guides/development.md` -> `guides-development`. */
 export function chapterId(file) {
-  return file.replace(/\.md$/i, "").replace(/[^\w]+/g, "-").toLowerCase();
+  return file
+    .replace(/\.md$/i, "")
+    .replace(/[^\w]+/g, "-")
+    .toLowerCase();
 }
 
 function assertCoversDocs(chapters, onDisk) {

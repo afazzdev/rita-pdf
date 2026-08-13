@@ -15,10 +15,10 @@ directory, chapters ordered README-first then alphabetically, and writes `docs/h
 ## What you get
 
 - **A cover** that bleeds to the paper edge, and a **part divider** per section of the book.
-- **A table of contents with page numbers.** Pagination only exists inside the print layout, so
-  the document is printed twice: the first pass is read back to resolve where each heading landed,
-  the second prints with the numbers filled in. If the passes disagree on page count the
-  unnumbered version wins — wrong page numbers are worse than none.
+- **A table of contents with page numbers.** Pagination only exists inside the print layout, so the
+  document is printed twice: the first pass is read back to resolve where each heading landed, the
+  second prints with the numbers filled in. If the passes disagree on page count the unnumbered
+  version wins — wrong page numbers are worse than none.
 - **Working links.** Heading ids are namespaced per chapter, so docs that reuse slugs like
   `#configuration` still link to the right one. `../other/doc.md#anchor` links become internal
   jumps, and a bare path like `docs/guides/config.md` written in a code span becomes a
@@ -28,9 +28,8 @@ directory, chapters ordered README-first then alphabetically, and writes `docs/h
 - **Code that survives print.** Syntax highlighting in a muted palette that still reads in
   greyscale; blocks wider than the column are set smaller so ASCII trees stay aligned rather than
   wrapping; box-drawing blocks get `line-height: 1` so tree stems actually connect.
-- **Tables sized by their content**, not equal columns, with a minimum width per column so a
-  heading like "Method" is never broken into "Meth / od". Past eight columns a table takes
-  landscape paper.
+- **Tables sized by their content**, not equal columns, with a minimum width per column so a heading
+  like "Method" is never broken into "Meth / od". Past eight columns a table takes landscape paper.
 
 ## Configuration
 
@@ -44,40 +43,38 @@ export default {
   title: "ACME Documentation",
   coverTitle: "ACME\nDocumentation", // newlines are deliberate line breaks
   subtitle: "Everything the platform team needs",
-  mark: "ACME · Internal",           // small label in the cover corner
+  mark: "ACME · Internal", // small label in the cover corner
   meta: ["v2.4 · updated quarterly"], // extra lines in the cover footer
 
   parts: [
     {
-      id: "backend",                  // matches the top-level directory name
+      id: "backend", // matches the top-level directory name
       name: "backend",
-      tagline: "Services",            // shown on the cover card
+      tagline: "Services", // shown on the cover card
       blurb: "What this part covers.",
-      accent: "#123f5c",              // optional; a default palette is used otherwise
+      accent: "#123f5c", // optional; a default palette is used otherwise
     },
   ],
 
-  chapters: [
-    { part: "backend", file: "backend/README.md", title: "backend — Overview" },
-  ],
+  chapters: [{ part: "backend", file: "backend/README.md", title: "backend — Overview" }],
 };
 ```
 
 Everything is optional except that the docs directory must exist.
 
-| Key | Default | Notes |
-|---|---|---|
-| `docs` | `"docs"` | Directory of Markdown, relative to the config file |
-| `out` | `"docs/handbook.pdf"` | Output path |
-| `title` | `"Documentation"` | Cover title and running footer |
-| `coverTitle` | `title` | Newlines become line breaks |
-| `subtitle`, `mark`, `meta` | empty | Cover text |
-| `footer` | `title` | Running footer text |
-| `cover` | `true` | `false` prints no cover |
-| `parts` | inferred | One per top-level directory |
-| `chapters` | inferred | Listing them fixes the order |
-| `strict` | `true` | With `chapters` listed, a doc missing from the list fails the build |
-| `style` | built-in theme | Path to a replacement stylesheet |
+| Key                        | Default               | Notes                                                               |
+| -------------------------- | --------------------- | ------------------------------------------------------------------- |
+| `docs`                     | `"docs"`              | Directory of Markdown, relative to the config file                  |
+| `out`                      | `"docs/handbook.pdf"` | Output path                                                         |
+| `title`                    | `"Documentation"`     | Cover title and running footer                                      |
+| `coverTitle`               | `title`               | Newlines become line breaks                                         |
+| `subtitle`, `mark`, `meta` | empty                 | Cover text                                                          |
+| `footer`                   | `title`               | Running footer text                                                 |
+| `cover`                    | `true`                | `false` prints no cover                                             |
+| `parts`                    | inferred              | One per top-level directory                                         |
+| `chapters`                 | inferred              | Listing them fixes the order                                        |
+| `strict`                   | `true`                | With `chapters` listed, a doc missing from the list fails the build |
+| `style`                    | built-in theme        | Path to a replacement stylesheet                                    |
 
 **Listing `chapters` is a promise that the list covers the docs.** A Markdown file that exists but
 is not listed fails the build, so a new doc cannot silently go missing from the handbook. Set
@@ -110,14 +107,14 @@ const { outFile, pages } = await build(config, { log: console.log });
 
 Node 20.11+, and a Chromium to print with. If there isn't one, rita-pdf downloads its own on first
 run (~170MB, cached in `~/.cache/puppeteer`); later runs are offline. The download happens at
-runtime rather than in a postinstall script because npm and pnpm both block package build scripts
-by default now, so a tool run through `npx` cannot count on one having run.
+runtime rather than in a postinstall script because npm and pnpm both block package build scripts by
+default now, so a tool run through `npx` cannot count on one having run.
 
-Use `--browser /path/to/chrome` (or `PUPPETEER_EXECUTABLE_PATH`) to print with a browser you
-already have and skip the download entirely.
+Use `--browser /path/to/chrome` (or `PUPPETEER_EXECUTABLE_PATH`) to print with a browser you already
+have and skip the download entirely.
 
-On Linux and macOS the archive is unpacked with the system `unzip` where available — the bundled
-JS unpacker has been observed to stall, leaving a browser directory with no executable in it.
+On Linux and macOS the archive is unpacked with the system `unzip` where available — the bundled JS
+unpacker has been observed to stall, leaving a browser directory with no executable in it.
 
 ## Using it with mise
 

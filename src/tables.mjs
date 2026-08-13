@@ -40,9 +40,7 @@ export function measureTable(tokens, start) {
       // that are a single code span are mono, both a little wider per character
       // than the sans used for prose.
       const mono = /^`[^`]+`$/.test(text.trim()) ? 1.25 : 1;
-      const weight = inHeader
-        ? Math.min(text.length, 14) * 1.15
-        : Math.min(text.length, 64) * mono;
+      const weight = inHeader ? Math.min(text.length, 14) * 1.15 : Math.min(text.length, 64) * mono;
       weights[column] = Math.max(weights[column] ?? 0, weight, 6);
 
       if (inHeader) {
@@ -62,8 +60,7 @@ export function measureTable(tokens, start) {
             .map((w) => w.length),
           0
         );
-        const width =
-          Math.min(longestWord, 13) * CHAR_MM * (isCodeValue ? 1 : 0.85) + CELL_PAD_MM;
+        const width = Math.min(longestWord, 13) * CHAR_MM * (isCodeValue ? 1 : 0.85) + CELL_PAD_MM;
         minima[column] = Math.max(minima[column] ?? 0, width);
       }
       column++;
