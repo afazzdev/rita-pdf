@@ -128,6 +128,20 @@ description = "Build the documentation handbook"
 run = "rita-pdf --config docs-pdf.config.mjs"
 ```
 
+## Development
+
+```bash
+npm install          # husky installs the pre-commit hook
+npm run lint         # oxlint
+npm run format       # prettier
+npm run typecheck    # tsc, JSDoc only — no build step, no transpile
+npm test             # vitest: 36 unit tests, no browser, under a second
+npm run build:example  # the slow lane: prints examples/handbook.pdf for real
+```
+
+Types are generated from JSDoc into `types/` and committed, so a clone has them and CI can catch a
+stale regeneration. The runtime stays plain ESM — the files published are the files that run.
+
 ## License
 
 MIT
