@@ -1,0 +1,264 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`the whole document > matches the snapshot 1`] = `
+"<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fixture Handbook</title>
+<style></style>
+</head>
+<body>
+<section class="cover">
+  <div class="cover-body">
+    <h1>Fixture Handbook</h1>
+    <div class="cover-parts">
+      <div><span class="label">Part I</span>alpha<br>2 chapters</div>
+      <div><span class="label">Part II</span>beta<br>2 chapters</div>
+    </div>
+  </div>
+  <div class="meta">
+    <div>Generated 2026-08-13</div>
+    <div>4 chapters</div>
+  </div>
+</section>
+<section class="toc">
+<h1>Table of Contents</h1>
+<div class="part-alpha">
+<h2>Part I — alpha</h2>
+<ol>
+<li><a href="#alpha-readme"><span class="t">01  Overview</span><span class="leader"></span><span class="p">&nbsp;</span></a>
+<ol>
+<li><a href="#alpha-readme--layout"><span class="t">Layout</span><span class="leader"></span><span class="p">&nbsp;</span></a></li>
+<li><a href="#alpha-readme--wide-block"><span class="t">Wide block</span><span class="leader"></span><span class="p">&nbsp;</span></a></li>
+<li><a href="#alpha-readme--plain-block"><span class="t">Plain block</span><span class="leader"></span><span class="p">&nbsp;</span></a></li>
+<li><a href="#alpha-readme--links"><span class="t">Links</span><span class="leader"></span><span class="p">&nbsp;</span></a></li>
+</ol></li>
+<li><a href="#alpha-guides-configuration"><span class="t">02  Configuration</span><span class="leader"></span><span class="p">&nbsp;</span></a>
+<ol>
+<li><a href="#alpha-guides-configuration--narrow-table"><span class="t">Narrow table</span><span class="leader"></span><span class="p">&nbsp;</span></a></li>
+<li><a href="#alpha-guides-configuration--six-columns"><span class="t">Six columns</span><span class="leader"></span><span class="p">&nbsp;</span></a></li>
+</ol></li>
+</ol>
+</div>
+<div class="part-beta">
+<h2>Part II — beta</h2>
+<ol>
+<li><a href="#beta-readme"><span class="t">03  Overview</span><span class="leader"></span><span class="p">&nbsp;</span></a>
+<ol>
+<li><a href="#beta-readme--nine-columns"><span class="t">Nine columns</span><span class="leader"></span><span class="p">&nbsp;</span></a></li>
+<li><a href="#beta-readme--nine-rows"><span class="t">Nine rows</span><span class="leader"></span><span class="p">&nbsp;</span></a></li>
+</ol></li>
+<li><a href="#beta-state"><span class="t">04  State</span><span class="leader"></span><span class="p">&nbsp;</span></a></li>
+</ol>
+</div>
+</section>
+<section class="part-divider part-alpha">
+  <div class="part-label">Part I</div>
+  <h1>alpha</h1>
+  <ol>
+<li><span class="n">01</span>Overview</li>
+<li><span class="n">02</span>Configuration</li>
+  </ol>
+</section>
+<section class="chapter part-alpha">
+<header class="chapter-head">
+  <div class="eyebrow"><span class="n">01</span><span>Part I — alpha</span></div>
+  <h1 id="alpha-readme">Overview</h1>
+</header>
+<h3 id="alpha-readme--layout">Layout</h3>
+<pre class="code tree"><code>.
+├── one/                    # First
+│   ├── a.ts                # Aye
+│   └── b.ts                # Bee
+└── two/                    # Second
+</code></pre>
+<h3 id="alpha-readme--wide-block">Wide block</h3>
+<pre class="code dense-1"><code class="hljs language-text">a-very-long-line-that-goes-past-the-portrait-column-width-and-then-keeps-going-well-past-it-so-the-dense-class-applies-here
+</code></pre>
+<h3 id="alpha-readme--plain-block">Plain block</h3>
+<pre class="code"><code class="hljs language-bash">npm install
+npm start
+</code></pre>
+<h3 id="alpha-readme--links">Links</h3>
+<p>Configured in <a href="#alpha-guides-configuration">the guide</a>, and also <a class="xref" href="#alpha-guides-configuration">Chapter 02 — Configuration</a>.
+Something outside the book: <code>CONTRIBUTING.md</code>.</p>
+
+</section>
+<section class="chapter part-alpha">
+<header class="chapter-head">
+  <div class="eyebrow"><span class="n">02</span><span>Part I — alpha</span></div>
+  <h1 id="alpha-guides-configuration">Configuration</h1>
+</header>
+<h3 id="alpha-guides-configuration--narrow-table">Narrow table</h3>
+<table><colgroup><col style="width:50.00%"><col style="width:50.00%"></colgroup>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PORT</code></td>
+<td><code>8080</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="alpha-guides-configuration--six-columns">Six columns</h3>
+<table><colgroup><col style="width:9.08%"><col style="width:18.62%"><col style="width:17.38%"><col style="width:18.62%"><col style="width:20.17%"><col style="width:16.14%"></colgroup>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Purpose</th>
+<th>Request body</th>
+<th>Response</th>
+<th>Auth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/v1/things</code></td>
+<td>List things</td>
+<td>—</td>
+<td><code>Page&lt;Thing&gt;</code></td>
+<td>Authenticated</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/v1/things</code></td>
+<td>Create a thing</td>
+<td><code>ThingDraft</code></td>
+<td><code>Thing</code></td>
+<td>Authenticated</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="part-divider part-beta">
+  <div class="part-label">Part II</div>
+  <h1>beta</h1>
+  <ol>
+<li><span class="n">03</span>Overview</li>
+<li><span class="n">04</span>State</li>
+  </ol>
+</section>
+<section class="chapter part-beta">
+<header class="chapter-head">
+  <div class="eyebrow"><span class="n">03</span><span>Part II — beta</span></div>
+  <h1 id="beta-readme">Overview</h1>
+</header>
+<h3 id="beta-readme--nine-columns">Nine columns</h3>
+<table class="landscape-table"><colgroup><col style="width:12.92%"><col style="width:8.86%"><col style="width:8.86%"><col style="width:8.86%"><col style="width:8.86%"><col style="width:8.86%"><col style="width:8.86%"><col style="width:8.86%"><col style="width:25.09%"></colgroup>
+<thead>
+<tr>
+<th>Profile</th>
+<th style="text-align:center">app</th>
+<th style="text-align:center">web</th>
+<th style="text-align:center">jobs</th>
+<th style="text-align:center">api</th>
+<th style="text-align:center">cdn</th>
+<th style="text-align:center">edge</th>
+<th style="text-align:center">queue</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>local</code></td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">–</td>
+<td style="text-align:center">–</td>
+<td style="text-align:center">✓</td>
+<td>Developer machine</td>
+</tr>
+<tr>
+<td><code>dev</code></td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">–</td>
+<td style="text-align:center">✓</td>
+<td>Deployed dev</td>
+</tr>
+<tr>
+<td><code>prod</code></td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td>Production</td>
+</tr>
+</tbody>
+</table>
+<h3 id="beta-readme--nine-rows">Nine rows</h3>
+<table class="long-table"><colgroup><col style="width:46.51%"><col style="width:53.49%"></colgroup>
+<thead>
+<tr>
+<th>Step</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>one</td>
+</tr>
+<tr>
+<td>2</td>
+<td>two</td>
+</tr>
+<tr>
+<td>3</td>
+<td>three</td>
+</tr>
+<tr>
+<td>4</td>
+<td>four</td>
+</tr>
+<tr>
+<td>5</td>
+<td>five</td>
+</tr>
+<tr>
+<td>6</td>
+<td>six</td>
+</tr>
+<tr>
+<td>7</td>
+<td>seven</td>
+</tr>
+<tr>
+<td>8</td>
+<td>eight</td>
+</tr>
+<tr>
+<td>9</td>
+<td>nine</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="chapter part-beta">
+<header class="chapter-head">
+  <div class="eyebrow"><span class="n">04</span><span>Part II — beta</span></div>
+  <h1 id="beta-state">State</h1>
+</header>
+<p>Back to <a href="#alpha-readme--layout">alpha</a>.</p>
+
+</section>
+</body>
+</html>"
+`;
