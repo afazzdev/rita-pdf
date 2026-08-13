@@ -1,0 +1,5 @@
+node_modules/
+.chromium/
+types/
+examples/*.pdf
+tests/**/__snapshots__/

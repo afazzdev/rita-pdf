@@ -1,7 +1,7 @@
 {
   "name": "rita-pdf",
   "version": "0.1.0",
-  "description": "Binds a directory of Markdown docs into a single typeset PDF handbook — cover, table of contents with real page numbers, mermaid diagrams, and syntax-highlighted code.",
+  "description": "Binds a directory of Markdown docs into a single typeset PDF handbook \u2014 cover, table of contents with real page numbers, mermaid diagrams, and syntax-highlighted code.",
   "keywords": [
     "markdown",
     "pdf",
@@ -33,8 +33,14 @@
     "LICENSE"
   ],
   "scripts": {
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "build:example": "node bin/rita-pdf.mjs --config examples/rita.config.mjs",
-    "check": "node --check bin/rita-pdf.mjs && for f in src/*.mjs; do node --check \"$f\" || exit 1; done"
+    "prepare": "husky || true"
   },
   "dependencies": {
     "@puppeteer/browsers": "^2.13.0",
@@ -51,5 +57,22 @@
   "bugs": {
     "url": "https://github.com/afazzdev/rita-pdf/issues"
   },
-  "homepage": "https://github.com/afazzdev/rita-pdf#readme"
+  "homepage": "https://github.com/afazzdev/rita-pdf#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
+    "oxlint": "^1.78.0",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  },
+  "lint-staged": {
+    "*.{mjs,js}": [
+      "oxlint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md,yml}": [
+      "prettier --write"
+    ]
+  }
 }
