@@ -1,0 +1,4 @@
+node_modules/
+.chromium/
+*.log
+examples/*.pdf

@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install
+        run: npm ci --ignore-scripts
+
+      - name: Syntax check
+        run: npm run check
+
+      # The real test: bind the example docs and assert the PDF came out with
+      # pages, working internal links, and no link left pointing at a .md file.
+      - name: Build the example handbook
+        run: node bin/rita-pdf.mjs --config examples/rita.config.mjs
+
+      - name: Verify the output
+        run: node scripts/verify.mjs examples/handbook.pdf
+
+      - uses: actions/upload-artifact@v4
+        if: matrix.node == 22
+        with:
+          name: example-handbook
+          path: examples/handbook.pdf

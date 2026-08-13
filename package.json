@@ -1,0 +1,55 @@
+{
+  "name": "rita-pdf",
+  "version": "0.1.0",
+  "description": "Binds a directory of Markdown docs into a single typeset PDF handbook — cover, table of contents with real page numbers, mermaid diagrams, and syntax-highlighted code.",
+  "keywords": [
+    "markdown",
+    "pdf",
+    "documentation",
+    "handbook",
+    "mermaid",
+    "puppeteer",
+    "print"
+  ],
+  "license": "MIT",
+  "author": "afazzdev",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "bin": {
+    "rita-pdf": "bin/rita-pdf.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs",
+    "./style.css": "./assets/style.css"
+  },
+  "files": [
+    "bin",
+    "src",
+    "assets",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build:example": "node bin/rita-pdf.mjs --config examples/rita.config.mjs",
+    "check": "node --check bin/rita-pdf.mjs && for f in src/*.mjs; do node --check \"$f\" || exit 1; done"
+  },
+  "dependencies": {
+    "@puppeteer/browsers": "^2.13.0",
+    "highlight.js": "^11.11.1",
+    "markdown-it": "^14.1.0",
+    "mermaid": "^11.4.1",
+    "pdf-lib": "^1.17.1",
+    "puppeteer": "^24.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afazzdev/rita-pdf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/afazzdev/rita-pdf/issues"
+  },
+  "homepage": "https://github.com/afazzdev/rita-pdf#readme"
+}

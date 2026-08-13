@@ -1,0 +1,733 @@
+/* rita-pdf print theme.
+   Light-only palette and system fonts — this is a print target, and generation
+   must keep working offline, so nothing is fetched.
+
+   Per-part accents (`.part-<id> { --accent: … }`) are appended at build time
+   from the config; everything here reads them through the custom properties. */
+
+:root {
+  /* Type */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    "Liberation Sans", Arial, sans-serif;
+  --font-serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia,
+    "Liberation Serif", "DejaVu Serif", serif;
+  --font-mono: "SFMono-Regular", "JetBrains Mono", "Cascadia Code", Menlo, Consolas,
+    "Liberation Mono", "DejaVu Sans Mono", monospace;
+
+  /* Ink */
+  --ink: #16191d;
+  --ink-soft: #59626c;
+  --ink-faint: #8b949e;
+  --rule: #dde3e9;
+  --rule-soft: #eef1f4;
+  --paper: #ffffff;
+
+  /* Accents. Each part of the book overrides these, so a reader can tell one
+     part's pages from another's by the chapter openers alone. */
+  --accent: #123f5c;
+  --accent-tint: #eaf1f6;
+  --code-bg: #f6f8fa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-serif);
+  font-size: 10.5pt;
+  line-height: 1.62;
+  hyphens: none;
+}
+
+/* ---------- Cover ---------- */
+
+/* A named page with no margins, so the cover panel bleeds to the paper edge and
+   the running footer — which Chrome draws in the margin box — has nowhere to
+   print. Merging a separately-printed cover would do the same, but it drops the
+   PDF's named destinations and kills every internal link. */
+@page cover-page {
+  size: A4;
+  margin: 0;
+}
+
+.cover {
+  page: cover-page;
+  page-break-after: always;
+  width: 210mm;
+  height: 297mm;
+  padding: 26mm 24mm 22mm;
+  background: linear-gradient(158deg, #0d3149 0%, #123f5c 45%, #1c5c74 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Quiet geometric motif — a nod to the module graph inside. */
+.cover::after {
+  content: "";
+  position: absolute;
+  right: -40mm;
+  bottom: -60mm;
+  width: 150mm;
+  height: 150mm;
+  border: 1.5mm solid rgba(255, 255, 255, 0.09);
+  border-radius: 50%;
+  box-shadow: 0 0 0 22mm rgba(255, 255, 255, 0.05);
+}
+
+.cover .mark {
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.cover .cover-body {
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.cover h1 {
+  font-family: var(--font-sans);
+  font-size: 40pt;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #fff;
+  page-break-before: auto;
+}
+
+.cover .subtitle {
+  font-family: var(--font-sans);
+  font-size: 13pt;
+  font-weight: 400;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 5mm 0 0;
+  max-width: 120mm;
+}
+
+.cover .cover-parts {
+  display: flex;
+  gap: 6mm;
+  margin: 14mm 0 0;
+  padding-top: 6mm;
+  border-top: 0.6mm solid rgba(255, 255, 255, 0.28);
+  font-family: var(--font-sans);
+  font-size: 10pt;
+}
+
+.cover .cover-parts div {
+  flex: 1;
+}
+
+.cover .cover-parts .label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1.5mm;
+}
+
+.cover .meta {
+  position: relative;
+  z-index: 1;
+  margin-top: 12mm;
+  font-family: var(--font-mono);
+  font-size: 8.5pt;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+/* ---------- Part dividers ---------- */
+
+.part-divider {
+  page-break-before: always;
+  page-break-after: always;
+  height: 245mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 6mm;
+  border-left: 3mm solid var(--accent);
+}
+
+.part-divider .part-label {
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4mm;
+}
+
+.part-divider h1 {
+  font-family: var(--font-sans);
+  font-size: 34pt;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 3mm;
+  padding: 0;
+  border: 0;
+  page-break-before: auto;
+}
+
+.part-divider .part-blurb {
+  font-size: 12pt;
+  color: var(--ink-soft);
+  max-width: 130mm;
+  margin: 0 0 10mm;
+}
+
+.part-divider ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 2;
+  column-gap: 10mm;
+  font-family: var(--font-sans);
+  font-size: 9.5pt;
+  color: var(--ink-soft);
+}
+
+.part-divider ol li {
+  margin: 0 0 2mm;
+  break-inside: avoid;
+}
+
+.part-divider ol .n {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  margin-right: 2mm;
+}
+
+/* ---------- Table of contents ---------- */
+
+.toc {
+  page-break-after: always;
+}
+
+.toc h1 {
+  page-break-before: auto;
+}
+
+.toc h2 {
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 10mm 0 4mm;
+  padding: 0 0 2mm;
+  border-bottom: 0.5mm solid var(--accent);
+}
+
+.toc h2:first-of-type {
+  margin-top: 4mm;
+}
+
+.toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc > ol > li {
+  margin: 3mm 0;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 11pt;
+}
+
+.toc ol ol {
+  margin: 1.5mm 0 3mm 8mm;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 9.5pt;
+  color: var(--ink-soft);
+}
+
+.toc ol ol li {
+  margin: 0.8mm 0;
+}
+
+.toc a {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5mm;
+}
+
+.toc .t {
+  flex: 0 1 auto;
+}
+
+/* A hairline rather than a dot leader: Chrome emits every dot of a dotted
+   border as its own vector op, which added ~2.3MB to a 125-page document. */
+.toc .leader {
+  flex: 1 1 auto;
+  min-width: 4mm;
+  border-bottom: 0.4pt solid var(--rule);
+  transform: translateY(-1mm);
+}
+
+/* Fixed width, so the measuring pass and the numbered pass lay out identically
+   — see renderPdf() in build-pdf.mjs. */
+.toc .p {
+  flex: 0 0 9mm;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 9pt;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-faint);
+}
+
+.toc > ol > li > a .p {
+  color: var(--accent);
+}
+
+/* ---------- Chapter openers ---------- */
+
+.chapter-head {
+  page-break-before: always;
+  page-break-after: avoid;
+  margin: 0 0 8mm;
+  padding: 0 0 5mm;
+  border-bottom: 0.8mm solid var(--accent);
+}
+
+.chapter-head .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 12mm;
+}
+
+.chapter-head .eyebrow .n {
+  color: #fff;
+  background: var(--accent);
+  padding: 1mm 2.5mm;
+  border-radius: 1mm;
+  letter-spacing: 0.12em;
+}
+
+.chapter-head h1 {
+  font-family: var(--font-sans);
+  font-size: 26pt;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  page-break-before: auto;
+}
+
+/* ---------- Headings ---------- */
+
+h1 {
+  page-break-before: always;
+  page-break-after: avoid;
+  font-family: var(--font-sans);
+  font-size: 22pt;
+  line-height: 1.15;
+  margin: 0 0 5mm;
+  padding-bottom: 2.5mm;
+  border-bottom: 0.5mm solid var(--accent);
+  color: var(--accent);
+}
+
+h2 {
+  font-family: var(--font-sans);
+  font-size: 15pt;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  margin: 9mm 0 3mm;
+  padding-bottom: 1.5mm;
+  border-bottom: 0.3mm solid var(--rule);
+}
+
+h3 {
+  font-family: var(--font-sans);
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 6mm 0 2mm;
+}
+
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--ink-soft);
+  margin: 5mm 0 1.5mm;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  page-break-after: avoid;
+}
+
+/* ---------- Body copy ---------- */
+
+p {
+  margin: 0 0 3mm;
+  orphans: 3;
+  widows: 3;
+}
+
+ul,
+ol {
+  margin: 0 0 3mm;
+  padding-left: 6mm;
+}
+
+li {
+  margin: 1.2mm 0;
+}
+
+li::marker {
+  color: var(--ink-faint);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 0.2mm solid var(--rule);
+}
+
+/* Cross-reference to another chapter, standing in for a path that named a file
+   the reader of a printed book does not have. */
+a.xref {
+  font-family: var(--font-sans);
+  font-size: 9.4pt;
+  white-space: nowrap;
+}
+
+strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+blockquote {
+  margin: 4mm 0;
+  padding: 2.5mm 4mm;
+  background: var(--accent-tint);
+  border-left: 1mm solid var(--accent);
+  color: var(--ink-soft);
+  page-break-inside: avoid;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+hr {
+  border: 0;
+  border-top: 0.3mm solid var(--rule);
+  margin: 7mm 0;
+}
+
+/* ---------- Code ---------- */
+
+code {
+  font-family: var(--font-mono);
+  font-size: 8.6pt;
+  background: var(--code-bg);
+  border: 0.2mm solid var(--rule);
+  border-radius: 1mm;
+  padding: 0.2mm 1mm;
+  color: #0f2b3d;
+  /* Long identifiers (fully-qualified Java class names, env var chains) may
+     break, but only when they genuinely do not fit — `anywhere` would also
+     shrink table columns to a few characters wide. */
+  overflow-wrap: break-word;
+}
+
+pre {
+  background: var(--code-bg);
+  border: 0.2mm solid var(--rule);
+  border-left: 1mm solid var(--accent);
+  border-radius: 0 1.5mm 1.5mm 0;
+  padding: 3mm 3.5mm;
+  margin: 0 0 4mm;
+  page-break-inside: avoid;
+  /* The docs contain long shell commands and env-var exports — wrap, never clip. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+pre {
+  font-size: 8.4pt;
+  line-height: 1.5;
+}
+
+pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  color: var(--ink);
+}
+
+/* Very long code blocks (project trees, full config files) would leave a mostly
+   empty page if forced whole onto the next one. */
+pre.long-block {
+  page-break-inside: auto;
+}
+
+/* Wide blocks — project trees, aligned comment columns — are set smaller so
+   their lines fit the column instead of wrapping, which would scramble the
+   alignment that makes them readable. Applied by build-pdf.mjs from the widest
+   line in the block.
+
+   Sized on the `pre`, not the inner `code`: `code` is inline, so its
+   line-height does not drive the block's line boxes. */
+pre.dense-1,
+pre.dense-1 code {
+  font-size: 7.1pt;
+}
+
+pre.dense-2,
+pre.dense-2 code {
+  font-size: 5.6pt;
+}
+
+/* Box-drawing glyphs fill their em box exactly, so the vertical stems of a
+   directory tree only join up when consecutive lines touch. At any looser
+   line-height the tree renders as a column of disconnected dashes. */
+pre.tree {
+  line-height: 1;
+}
+
+/* Syntax highlighting — muted, ink-first, readable in greyscale print. */
+.hljs-comment,
+.hljs-quote {
+  color: #6b7681;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag {
+  color: #7b2d8b;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition {
+  color: #1a6b3c;
+}
+
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-meta {
+  color: #9a5518;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #1c4f78;
+  font-weight: 600;
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-built_in {
+  color: #10606b;
+}
+
+.hljs-deletion {
+  color: #a3282a;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
+/* ---------- Tables ---------- */
+
+/* One table style throughout. Column count changes the column *widths* (see
+   measureTable in build-pdf.mjs) and, past eight columns, the paper
+   orientation — it never changes how a table looks. */
+
+table {
+  width: 100%;
+  /* Fixed layout keeps every table exactly one text column wide. With auto
+     layout a single long identifier can push the table past the paper width,
+     and Chrome then shrinks the *whole document* to fit. */
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin: 1mm 0 5mm;
+  font-family: var(--font-sans);
+  font-size: 8.2pt;
+  line-height: 1.45;
+  page-break-inside: avoid;
+}
+
+thead {
+  display: table-header-group;
+}
+
+tr {
+  page-break-inside: avoid;
+}
+
+/* Horizontal rules only — a full grid fights with the code spans inside the
+   cells, which already carry their own boxes. */
+th,
+td {
+  border: 0;
+  border-bottom: 0.2mm solid var(--rule);
+  padding: 1.9mm 2mm;
+  text-align: left;
+  vertical-align: top;
+  /* Columns have a fixed share of the width, so long identifiers must be
+     allowed to break rather than overflow the cell. */
+  overflow-wrap: anywhere;
+}
+
+/* Sentence case, no tracking: uppercase mono with 0.12em letter-spacing costs
+   about half again the width of the characters it prints, which is what used to
+   shatter headings like "Request body" into two-character stacks. Headings also
+   break at their hyphens rather than mid-word — module names are full of them,
+   and `anywhere` would break even when a hyphen was available. */
+th {
+  overflow-wrap: break-word;
+  font-family: var(--font-sans);
+  font-size: 7.8pt;
+  font-weight: 700;
+  color: var(--accent);
+  background: none;
+  border-bottom: 0.5mm solid var(--accent);
+  padding-bottom: 1.5mm;
+}
+
+tbody tr:nth-child(even) {
+  background: var(--rule-soft);
+}
+
+tbody tr:last-child td {
+  border-bottom: 0.4mm solid var(--rule);
+}
+
+table code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 7.6pt;
+  color: var(--ink);
+}
+
+/* Tall tables break across pages; held together they jump to the next page
+   whole and leave a hole behind them. */
+table.long-table {
+  page-break-inside: auto;
+}
+
+/* Past eight columns no amount of column sizing rescues a table in the portrait
+   text column — nine module names against a row of ✓ marks — so it gets a
+   landscape page, the same treatment as a wide diagram. No explicit page
+   breaks: switching page type forces one on its own, and asking for breaks as
+   well leaves a near-empty portrait page on each side. */
+@page landscape-table {
+  size: A4 landscape;
+  margin: 14mm;
+}
+
+table.landscape-table {
+  page: landscape-table;
+  page-break-inside: auto;
+}
+
+/* ---------- Mermaid ---------- */
+
+pre.mermaid {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 5mm 0 6mm;
+  text-align: center;
+  page-break-inside: avoid;
+  white-space: normal;
+}
+
+pre.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Wide diagrams squeezed into the portrait text column end up with unreadable
+   labels, so they get a landscape page of their own. The class is applied by
+   build-pdf.mjs after measuring the rendered SVG. */
+@page landscape-diagram {
+  size: A4 landscape;
+  margin: 14mm;
+}
+
+pre.mermaid.landscape {
+  page: landscape-diagram;
+  page-break-before: always;
+  page-break-after: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* A4 landscape content box minus margins. */
+  height: 168mm;
+  margin: 0;
+}
+
+pre.mermaid.landscape svg {
+  width: 100%;
+  max-height: 168mm;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
