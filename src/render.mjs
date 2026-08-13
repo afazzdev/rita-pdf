@@ -4,7 +4,7 @@ import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { basename, dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
-import puppeteer from "puppeteer";
+import { executablePath, launch } from "puppeteer";
 import { PDFDocument, PDFName, PDFDict, PDFArray } from "pdf-lib";
 import { buildHtml } from "./document.mjs";
 
@@ -52,7 +52,7 @@ export async function ensureBrowser(configuredPath, log) {
   }
 
   // …/<cacheDir>/chrome/<platform>-<buildId>/chrome-linux64/chrome
-  const exe = puppeteer.executablePath();
+  const exe = executablePath();
   if (existsSync(exe)) return exe;
 
   const installDir = dirname(dirname(exe));
@@ -63,7 +63,7 @@ export async function ensureBrowser(configuredPath, log) {
   const { install, Browser } = await import("@puppeteer/browsers");
 
   log(`downloading Chromium ${buildId} (first run only, ~170MB)…`);
-  await install({ browser: Browser.CHROME, buildId, cacheDir, unpack: hasUnzip() ? false : true });
+  await install({ browser: Browser.CHROME, buildId, cacheDir, unpack: !hasUnzip() });
 
   if (!existsSync(exe)) {
     const archive = existsSync(archiveDir)
@@ -222,10 +222,10 @@ export async function renderPdf(config, chapters, css, { tmpDir, log }) {
     mermaidUrl: pathToFileURL(resolveMermaidEntry()).href,
   };
 
-  const executablePath = await ensureBrowser(config.executablePath, log);
-  const browser = await puppeteer.launch({
+  const browserPath = await ensureBrowser(config.executablePath, log);
+  const browser = await launch({
     headless: true,
-    executablePath,
+    executablePath: browserPath,
     args: ["--no-sandbox", "--allow-file-access-from-files", "--font-render-hinting=none"],
   });
 

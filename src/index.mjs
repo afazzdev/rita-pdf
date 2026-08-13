@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRenderer, transformChapter } from "./markdown.mjs";
-import { buildHtml, loadCss } from "./document.mjs";
+import { loadCss } from "./document.mjs";
 import { renderPdf } from "./render.mjs";
 
 export { loadConfig, findConfig, CONFIG_NAMES } from "./config.mjs";

@@ -12,7 +12,10 @@
   },
   "rules": {
     "no-console": "off",
-    "no-await-in-loop": "off"
+    "no-await-in-loop": "off",
+    // The injected browser script sets window.__mermaidDone/__mermaidError; the
+    // dunder is deliberate, to stay clear of a page's own globals.
+    "no-underscore-dangle": "off"
   },
   "ignorePatterns": ["node_modules", "types", "examples/docs", "tests/fixtures"]
 }
