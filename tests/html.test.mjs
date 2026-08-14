@@ -15,7 +15,8 @@ beforeAll(async () => {
   config = await loadConfig({
     configPath: null,
     cwd: FIXTURES,
-    overrides: { docs: "docs", title: "Fixture Handbook" },
+    // Pinned: the cover prints this, and a snapshot must not expire overnight.
+    overrides: { docs: "docs", title: "Fixture Handbook", date: "2026-01-01" },
   });
   chapters = await renderChapters(config);
   // No stylesheet: this asserts structure, and 700 lines of CSS in a snapshot

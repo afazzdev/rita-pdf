@@ -63,8 +63,6 @@ ${list}
  * drops the PDF's named destinations and kills every internal link.)
  */
 function buildCover(config, chapters) {
-  const today = new Date().toISOString().slice(0, 10);
-
   const partCards = config.parts
     .map((part) => {
       const count = chapters.filter((c) => c.part === part.id).length;
@@ -88,7 +86,7 @@ function buildCover(config, chapters) {
     ? `\n    <div class="subtitle">${escapeHtml(config.subtitle)}</div>`
     : "";
 
-  const meta = [`Generated ${today}`, `${chapters.length} chapters`, ...config.meta]
+  const meta = [`Generated ${config.date}`, `${chapters.length} chapters`, ...config.meta]
     .map((line) => `    <div>${escapeHtml(line)}</div>`)
     .join("\n");
 

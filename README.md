@@ -70,6 +70,7 @@ Everything is optional except that the docs directory must exist.
 | `coverTitle`               | `title`               | Newlines become line breaks                                         |
 | `subtitle`, `mark`, `meta` | empty                 | Cover text                                                          |
 | `footer`                   | `title`               | Running footer text                                                 |
+| `date`                     | today                 | Cover date; set it for a reproducible build                         |
 | `cover`                    | `true`                | `false` prints no cover                                             |
 | `parts`                    | inferred              | One per top-level directory                                         |
 | `chapters`                 | inferred              | Listing them fixes the order                                        |

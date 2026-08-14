@@ -80,6 +80,11 @@ export type Config = {
      */
     footer?: string;
     /**
+     * Date printed on the cover, `YYYY-MM-DD`. Defaults to today —
+     * set it to make a build reproducible.
+     */
+    date?: string;
+    /**
      * Set `false` to print no cover page.
      */
     cover?: boolean;
@@ -148,6 +153,7 @@ export type ResolvedConfig = {
     meta: string[];
     footer: string;
     coverTitle: string;
+    date: string;
     showCover: boolean;
     parts: ResolvedPart[];
     chapters: ResolvedChapter[];
@@ -191,6 +197,8 @@ export type ResolvedConfig = {
  * @property {string} [mark] Small label in the cover corner, e.g. "ACME · Internal".
  * @property {string|string[]} [meta] Extra lines in the cover's footer block.
  * @property {string} [footer] Running footer text. Defaults to `title`.
+ * @property {string} [date] Date printed on the cover, `YYYY-MM-DD`. Defaults to today —
+ *   set it to make a build reproducible.
  * @property {boolean} [cover] Set `false` to print no cover page.
  * @property {string} [lang] `lang` attribute on the document. Default `"en"`.
  * @property {string} [style] Path to a stylesheet replacing the built-in theme.
@@ -236,6 +244,7 @@ export type ResolvedConfig = {
  * @property {string[]} meta
  * @property {string} footer
  * @property {string} coverTitle
+ * @property {string} date
  * @property {boolean} showCover
  * @property {ResolvedPart[]} parts
  * @property {ResolvedChapter[]} chapters

@@ -40,6 +40,8 @@ import { pathToFileURL } from "node:url";
  * @property {string} [mark] Small label in the cover corner, e.g. "ACME · Internal".
  * @property {string|string[]} [meta] Extra lines in the cover's footer block.
  * @property {string} [footer] Running footer text. Defaults to `title`.
+ * @property {string} [date] Date printed on the cover, `YYYY-MM-DD`. Defaults to today —
+ *   set it to make a build reproducible.
  * @property {boolean} [cover] Set `false` to print no cover page.
  * @property {string} [lang] `lang` attribute on the document. Default `"en"`.
  * @property {string} [style] Path to a stylesheet replacing the built-in theme.
@@ -88,6 +90,7 @@ import { pathToFileURL } from "node:url";
  * @property {string[]} meta
  * @property {string} footer
  * @property {string} coverTitle
+ * @property {string} date
  * @property {boolean} showCover
  * @property {ResolvedPart[]} parts
  * @property {ResolvedChapter[]} chapters
@@ -268,6 +271,9 @@ async function normalize(raw, base) {
     mark: raw.mark ?? "",
     meta: [].concat(raw.meta ?? []),
     footer: raw.footer ?? title,
+    // Fixed at load time, not read per-render: two passes of the same build
+    // must not straddle midnight and disagree.
+    date: raw.date ?? new Date().toISOString().slice(0, 10),
     coverTitle: raw.coverTitle ?? title,
     showCover: raw.cover !== false,
     parts,
